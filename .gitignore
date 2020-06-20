@@ -1,6 +1,15 @@
 0_webinars/
 *.mp4
 
+# my VS 
+*.user
+*.vcxproj
+*.filters
+*.vcxproj.user
+*.vcxproj.filters
+*.txt
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,c++
 

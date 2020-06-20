@@ -2,6 +2,7 @@
 // source: https://opensource.org/licenses/MIT
 // understanding: https://habr.com/ru/post/310976/
 // author: Nakonechnyi Mikhail
+// date: 19.06.20
 
 #include <iostream>
 #include <windows.h>
