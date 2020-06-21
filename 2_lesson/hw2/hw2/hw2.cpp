@@ -37,8 +37,9 @@ NEED TO FIX:    I guess first step of position -> get_str = get "enter" and supp
 uint16_t show_menu();
 inline std::string get_str(std::string category);
 inline uint16_t get_int(std::string category);
+inline uint16_t get_width(std::string inputData, std::string descriptionName);
 void output(uint16_t state, std::string firstName, std::string lastName, uint16_t age, uint16_t termUntilRetirement, uint16_t annualSalary, std::string position);
-uint16_t get_width(std::string str, std::string str2);
+
 
 int main()
 {
@@ -72,20 +73,20 @@ uint16_t show_menu()
         "1. Console output\n"
         "2. File output\n"
         "3. Default\n";
-    uint16_t state = get_int("choiсe about output information");
+    uint16_t state = get_int("choice about output information");
     return state;
 }
 
-uint16_t get_width(std::string str, std::string str2)
+inline uint16_t get_width(std::string inputData, std::string descriptionName)
 {
     /*
-    str:    string of input user data  -> ex: Mikhail Nakonechnyi
-    str2:   string of description name -> ex: AnnualSalary
-    21 - is max lenght of higher description name
+    inputData:          string of input user data  -> ex: Mikhail Nakonechnyi
+    descriptionName:    string of description name -> ex: AnnualSalary
+    21                  is max lenght of higher description name
     */
-    uint16_t len = str.length();
-    uint16_t name = str2.length();
-    return 21 - name + len;
+    uint16_t inputDataLength = inputData.length();
+    uint16_t descriptionNameLength = descriptionName.length();
+    return 21 - descriptionNameLength + inputDataLength;
 }
 
 void output(
@@ -109,25 +110,12 @@ void output(
         exit(1);
     }
     std::string fullName = firstName + " " + lastName;
-    uint16_t wName = (fullName.length() == 19) ? 22 : get_width(fullName, "Name: ");
-    uint16_t wAge = (age > 0 && age < 10) ? 17 : 18;
-    uint16_t wRetiree = (termUntilRetirement > 0 && termUntilRetirement < 10) ? 1 : 2;
-    //uint16_t wSalary = (annualSalary > 1000 && ((annualSalary % 1000) < 1000)) ? 11 : 10;
+    uint16_t wName = get_width(fullName, "Name: ");
+    uint16_t wAge = get_width(std::to_string(age), "Age: ");
+    uint16_t wRetiree = get_width(std::to_string(termUntilRetirement), "TermUntilRetirement: ");
     uint16_t wSalary = get_width(std::to_string(annualSalary), "AnnualSalary: ");
-    uint16_t wPosition = (position.length() == 6) ? 17 : get_width(position, "Position: ");
-    std::cout << "wName:" << wName << std::endl;
-    //std::cout << "wSalary:" << (annualSalary % 100) <<((annualSalary % 100) < 10) << wSalary <<std::endl;
-//Name:             Mikhail Nakonechnyi
-//Age:                 25
-//TermUntilRetirement: 30
-//AnnualSalary:       4400
-//Position:        Junior
-//Name:                 Mik Ss
-//Age:                 54
-//TermUntilRetirement: 1
-//AnnualSalary:       4400
-//Position:        junior
-    // was 19 - 13
+    uint16_t wPosition = get_width(position, "Position: ");
+
     switch (state)
     {
     case 1:
@@ -139,53 +127,37 @@ void output(
             << "TermUntilRetirement: " << std::right << std::setw(wRetiree) << termUntilRetirement << std::endl
             << "AnnualSalary: " << std::right << std::setw(wSalary) << annualSalary << std::endl
             << "Position: " << std::right << std::setw(wPosition) << position << std::endl;
-        //std::cout << std::noshowpoint;
-        //std::cout.fill(' ');
-        //std::cout << "User Data Profile:\n"
-        // << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
-        // << "Age: " << std::setw(18) << age << std::endl
-        // << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
-        // << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
-        // << "Position: " << std::setw(17) << position << std::endl;
         break;
     case 2:
         file << std::noshowpoint;
         file.fill(' ');
         file << "User Data Profile:\n"
-            << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
-            << "Age: " << std::setw(18) << age << std::endl
-            << "TermUntilRetirement: " << std::setw(wRetiree) << std::left << termUntilRetirement << std::endl
-            << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
-            << "Position: " << std::setw(17) << position << std::endl;
+            << "Name: " << std::setw(wName) << fullName << std::endl
+            << "Age: " << std::right << std::setw(wAge) << age << std::endl
+            << "TermUntilRetirement: " << std::right << std::setw(wRetiree) << termUntilRetirement << std::endl
+            << "AnnualSalary: " << std::right << std::setw(wSalary) << annualSalary << std::endl
+            << "Position: " << std::right << std::setw(wPosition) << position << std::endl;
         break;
     default:
         std::cout << std::noshowpoint;
         std::cout.fill(' ');
         std::cout << "User Data Profile:\n"
-            << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
-            << "Age: " << std::setw(18) << age << std::endl
-            << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
-            << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
-            << "Position: " << std::setw(17) << position << std::endl;
+            << "Name: " << std::setw(wName) << fullName << std::endl
+            << "Age: " << std::right << std::setw(wAge) << age << std::endl
+            << "TermUntilRetirement: " << std::right << std::setw(wRetiree) << termUntilRetirement << std::endl
+            << "AnnualSalary: " << std::right << std::setw(wSalary) << annualSalary << std::endl
+            << "Position: " << std::right << std::setw(wPosition) << position << std::endl;
         // ===============================================================
         file << std::noshowpoint;
         file.fill(' ');
         file << "User Data Profile:\n"
-            << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
-            << "Age: " << std::setw(18) << age << std::endl
-            << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
-            << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
-            << "Position: " << std::setw(17) << position << std::endl;
+            << "Name: " << std::setw(wName) << fullName << std::endl
+            << "Age: " << std::right << std::setw(wAge) << age << std::endl
+            << "TermUntilRetirement: " << std::right << std::setw(wRetiree) << termUntilRetirement << std::endl
+            << "AnnualSalary: " << std::right << std::setw(wSalary) << annualSalary << std::endl
+            << "Position: " << std::right << std::setw(wPosition) << position << std::endl;
         break;
     }
-
-    // old vertion with returning string
-    //std::string str = "User Data Profile:\n"
-    //    "Name: " + firstName + " " + lastName + "\n"
-    //    "Age: " + std::to_string(age) + "\n"
-    //    "TermUntilRetirement: " + std::to_string(termUntilRetirement) + "\n"
-    //    "AnnualSalary: " + std::to_string(annualSalary) + "\n"
-    //    "Position: " + position + "\n";
 }
 
 inline uint16_t get_int(std::string category)
