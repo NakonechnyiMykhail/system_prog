@@ -91,8 +91,14 @@ int main()
     // Using operator '*' on a 4 byte value and then casting the result to a 8 byte value.Cast the value to the wider type before calling operator '*' to avoid overflow(io.2).hw
     // NEED: all int numbers write down with point as float/double
     double annual_salary = (daily_wage * 250.0) * 0.8;
+    std::uint8_t state = 0;
+    std::cout << 
+        "Menu (select output version - default console & file):\n"
+        "1. Console output\n"
+        "2. File output\n";
+    state = get_int("choise about output information");
 
-    output(0, first_name, last_name, age, term_until_retirement, annual_salary, position);
+    output(state, first_name, last_name, age, term_until_retirement, annual_salary, position);
 
     return 0;
 }
