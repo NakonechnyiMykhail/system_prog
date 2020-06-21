@@ -1,6 +1,7 @@
 ﻿// hw2.cpp:     User Profile
 // author:      Nakonechnyi Mikhail
 // date:        20.06.20
+// version:     1.0
 /* description of homework:
 Заимплементить приложение анкеты которое должно запросить у пользователя:
         First name
@@ -17,6 +18,11 @@
         Position: должность
 
 */
+/* 
+BUG:            if I use get_str for "position" varieble in the end. 
+WORKING:        this version and if I use standard practice with cout and cin
+NEED TO FIX:    I guess first step of position -> get_str = get "enter" and suppose it as user input
+*/
 
 #include <iostream>
 #include <fstream>
@@ -28,93 +34,72 @@
 #include <cstddef> // std::size_t
 #include <iomanip> // std::setw() | std::setprecision() 
 
+uint16_t show_menu();
 inline std::string get_str(std::string category);
-inline int get_int(std::string category);
-void output(int state, std::string firstName, std::string lastName, int age, int termUntilRetirement, double annualSalary, std::string position);
-    
+inline uint16_t get_int(std::string category);
+void output(uint16_t state, std::string firstName, std::string lastName, uint16_t age, uint16_t termUntilRetirement, uint16_t annualSalary, std::string position);
+uint16_t get_width(std::string str, std::string str2);
+
 int main()
 {
-    std::string first_name{ "" }, last_name{ "" }, position{ "" };
-    std::uint16_t age{0}, daily_wage{ 0 };
+    std::string first_name, last_name, position;
+    uint16_t age{ 0 }, daily_wage{ 0 }, state{ 0 };
 
-    // v1 ===========================================================================
-    
-    //std::cout << "Hello, user!\n We are glad to see you in our app. Please, enter unswers to the following questions.\n"
-    //    "Enter your \"First name\": ";
-    //std::cin >> first_name;
-    //std::cout << "Enter your \"Last name\": ";
-    //std::cin >> last_name;
-    //std::cout << "Enter your \"Age\": ";
-    //std::cin >> age;
-    //std::cout << "Enter your \"Daily wage\": ";
-    //std::cin >> daily_wage;
-    //std::cout << "Enter your \"Position\" at the company: ";
-    //std::cin >> position;
-
-    //if (age <= 0 )
-    //{
-    //    std::cerr << "Oops, you entered an invalid age!" << std::endl;
-    //    exit(1);
-    //} 
-
-    //int term_until_retirement = 55 - age;
-    //float annual_salary = (daily_wage * 250) * 0.8;
-
-    //file << "User Data Profile:\n"
-    // << "Name: " << first_name << " " << last_name << std::endl
-    // << "Age: " << age << std::endl
-    // << "TermUntilRetirement: " << term_until_retirement << std::endl
-    // << "AnnualSalary: " << annual_salary << std::endl
-    // << "Position: " << position << std::endl;
-
-    //std::cout << "User Data Profile:\n"
-    // << "Name: " << first_name << " " << last_name << std::endl
-    // << "Age: " << age << std::endl
-    // << "TermUntilRetirement: " << term_until_retirement << std::endl
-    // << "AnnualSalary: " << annual_salary << std::endl
-    // << "Position: " << position << std::endl;
-
-    // v2 ===========================================================================
     std::cout << "Hello, user!\nWe are glad to see you in our app. Please, enter unswers to the following questions.\n";
     first_name = get_str("\"First name\"");
     last_name = get_str("\"Last name\"");
-
-    // BUG: if I use following line in the end - I cann't enter "Position" 
-    position = get_str("\"Position\"");
     age = get_int("\"Age\"");
     daily_wage = get_int("\"Daily wage\"");
+    position = get_str("\"Position\"");
     
+    uint16_t term_until_retirement = (age > 0 && age < 55) ? 55 - age : 0;
+    uint16_t annual_salary = (int)(daily_wage * 250.0) * 0.8;
 
-    int term_until_retirement = 55 - age;
-    
-    // Warning	C26451	Arithmetic overflow : 
-    // Using operator '*' on a 4 byte value and then casting the result to a 8 byte value.Cast the value to the wider type before calling operator '*' to avoid overflow(io.2).hw
-    // NEED: all int numbers write down with point as float/double
-    double annual_salary = (daily_wage * 250.0) * 0.8;
-    std::uint8_t state = 0;
-    std::cout << 
-        "Menu (select output version - default console & file):\n"
-        "1. Console output\n"
-        "2. File output\n";
-    state = get_int("choise about output information");
-
-    output(state, first_name, last_name, age, term_until_retirement, annual_salary, position);
+    output(show_menu(), first_name, last_name, age, term_until_retirement, annual_salary, position);
 
     return 0;
 }
 
+uint16_t show_menu()
+{
+    /*
+    Funtion:    show menu and get choice for outputting profile data
+    Get:        integer varieble from user
+    Return:     int
+    */
+    std::cout <<
+        "Menu (select output version - default console & file):\n"
+        "1. Console output\n"
+        "2. File output\n"
+        "3. Default\n";
+    uint16_t state = get_int("choiсe about output information");
+    return state;
+}
+
+uint16_t get_width(std::string str, std::string str2)
+{
+    /*
+    str:    string of input user data  -> ex: Mikhail Nakonechnyi
+    str2:   string of description name -> ex: AnnualSalary
+    21 - is max lenght of higher description name
+    */
+    uint16_t len = str.length();
+    uint16_t name = str2.length();
+    return 21 - name + len;
+}
+
 void output(
-    int state,
+    uint16_t state,
     std::string firstName, 
     std::string lastName, 
-    int age, 
-    int termUntilRetirement, 
-    double annualSalary, 
+    uint16_t age, 
+    uint16_t termUntilRetirement,
+    uint16_t annualSalary,
     std::string position)
 {
     /*
     Funtion:    transform all variebles to text format
-    Get:        state: 1.Console, 2.File, Default: console and file output data
+    Get:        state: 1.Console, 2.File, 3.Default: console and file output data
     Get:        data variebles from user (string, string, int, int, float, string) 
     */
     std::ofstream file("profile.txt", std::ios::app & std::ios::trunc);
@@ -123,28 +108,55 @@ void output(
         std::cerr << "Uh oh, profile.txt could not be opened for writing!" << std::endl;
         exit(1);
     }
-
+    std::string fullName = firstName + " " + lastName;
+    uint16_t wName = (fullName.length() == 19) ? 22 : get_width(fullName, "Name: ");
+    uint16_t wAge = (age > 0 && age < 10) ? 17 : 18;
+    uint16_t wRetiree = (termUntilRetirement > 0 && termUntilRetirement < 10) ? 1 : 2;
+    //uint16_t wSalary = (annualSalary > 1000 && ((annualSalary % 1000) < 1000)) ? 11 : 10;
+    uint16_t wSalary = get_width(std::to_string(annualSalary), "AnnualSalary: ");
+    uint16_t wPosition = (position.length() == 6) ? 17 : get_width(position, "Position: ");
+    std::cout << "wName:" << wName << std::endl;
+    //std::cout << "wSalary:" << (annualSalary % 100) <<((annualSalary % 100) < 10) << wSalary <<std::endl;
+//Name:             Mikhail Nakonechnyi
+//Age:                 25
+//TermUntilRetirement: 30
+//AnnualSalary:       4400
+//Position:        Junior
+//Name:                 Mik Ss
+//Age:                 54
+//TermUntilRetirement: 1
+//AnnualSalary:       4400
+//Position:        junior
+    // was 19 - 13
     switch (state)
     {
     case 1:
         std::cout << std::noshowpoint;
         std::cout.fill(' ');
         std::cout << "User Data Profile:\n"
-         << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
-         << "Age: " << std::setw(18) << age << std::endl
-         << "TermUntilRetirement: " << std::setw(2) << termUntilRetirement << std::endl
-         << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
-         << "Position: " << std::setw(17) << position << std::endl;
+            << "Name: " << std::setw(wName)  << fullName << std::endl
+            << "Age: " << std::right << std::setw(wAge) << age << std::endl
+            << "TermUntilRetirement: " << std::right << std::setw(wRetiree) << termUntilRetirement << std::endl
+            << "AnnualSalary: " << std::right << std::setw(wSalary) << annualSalary << std::endl
+            << "Position: " << std::right << std::setw(wPosition) << position << std::endl;
+        //std::cout << std::noshowpoint;
+        //std::cout.fill(' ');
+        //std::cout << "User Data Profile:\n"
+        // << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
+        // << "Age: " << std::setw(18) << age << std::endl
+        // << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
+        // << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
+        // << "Position: " << std::setw(17) << position << std::endl;
         break;
     case 2:
         file << std::noshowpoint;
         file.fill(' ');
         file << "User Data Profile:\n"
-            << "Name: " << std::setw(22) << std::left << firstName << " " << lastName << std::endl
-            << "Age: " << std::setw(18) << std::left << age << std::endl
-            << "TermUntilRetirement: " << std::setw(2) << std::left << termUntilRetirement << std::endl
-            << "AnnualSalary: " << std::setw(11) << std::left << annualSalary << std::endl
-            << "Position: " << std::setw(17) << std::left << position << std::endl;
+            << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
+            << "Age: " << std::setw(18) << age << std::endl
+            << "TermUntilRetirement: " << std::setw(wRetiree) << std::left << termUntilRetirement << std::endl
+            << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
+            << "Position: " << std::setw(17) << position << std::endl;
         break;
     default:
         std::cout << std::noshowpoint;
@@ -152,7 +164,7 @@ void output(
         std::cout << "User Data Profile:\n"
             << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
             << "Age: " << std::setw(18) << age << std::endl
-            << "TermUntilRetirement: " << std::setw(2) << termUntilRetirement << std::endl
+            << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
             << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
             << "Position: " << std::setw(17) << position << std::endl;
         // ===============================================================
@@ -161,7 +173,7 @@ void output(
         file << "User Data Profile:\n"
             << "Name: " << std::setw(22) << firstName << " " << lastName << std::endl
             << "Age: " << std::setw(18) << age << std::endl
-            << "TermUntilRetirement: " << std::setw(2) << termUntilRetirement << std::endl
+            << "TermUntilRetirement: " << std::setw(wRetiree) << termUntilRetirement << std::endl
             << "AnnualSalary: " << std::setw(11) << annualSalary << std::endl
             << "Position: " << std::setw(17) << position << std::endl;
         break;
@@ -176,14 +188,14 @@ void output(
     //    "Position: " + position + "\n";
 }
 
-inline int get_int(std::string category)
+inline uint16_t get_int(std::string category)
 {
     /*
     Funtion:    print category and check inputting varieble for correct data
     Get:        integer varieble from user 
     Return:     int
     */
-    int number{0};
+    uint16_t number{0};
     while (true)
     {
         std::cout << "Enter your " << category << ": ";
@@ -210,7 +222,7 @@ inline std::string get_str(std::string category)
     Get:        string varieble from user
     Return:     string
     */
-    std::string str{""};
+    std::string str;
     while (true)
     {
         std::cout << "Enter your " << category << ": ";
@@ -219,7 +231,6 @@ inline std::string get_str(std::string category)
         bool bRejected = false;
 
         // checking each character at the entered word
-        //unsigned int
         for (std::size_t nIndex = 0; nIndex < str.length() && !bRejected; ++nIndex)
         {
             // if a current character is a letter -> ok
@@ -232,7 +243,7 @@ inline std::string get_str(std::string category)
             bRejected = true;
         }
         // if all is good
-        if (!bRejected) { break; }
+        if (!bRejected && str.length() > 1) { break; }
     }
     return str;
 }
