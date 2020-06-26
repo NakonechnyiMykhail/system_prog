@@ -18,6 +18,7 @@
 
 */
 #include <iostream>
+#include <cstdint>
 
 void version_one();
 void version_two();
@@ -35,6 +36,32 @@ int main()
 	return 0;
 }
 
+void print_roof(int count)
+{
+	for (size_t i = count; i > 0; i--)
+	{
+		std::cout << " ";
+	}
+	
+}
+
+
+/*
+simple version
+
+      /\
+     /  \ 
+	/    \ 
+   /      \ 
+  /        \
+ |----------|
+ |          |
+ |          |
+ |          |
+ |          |
+ |__________|
+
+*/
 
 /*
       /\
@@ -132,7 +159,7 @@ inline uint16_t get_int(std::string category)
 	Get:        integer varieble from user
 	Return:     int
 	*/
-	uint16_t number{ 0 };
+	uint16_t number { 0 };
 	while (true)
 	{
 		std::cout << "Enter your " << category << ": ";
