@@ -1,9 +1,11 @@
-// hw3.cpp : Build your house as at the picture.
+﻿// hw3.cpp : Build your house as at the picture.
 // author:      Nakonechnyi Mikhail
 // date:        25.06.20
 // version:     2.0
-/* description of homework:
-// Print this house at console
+// description of homework:
+// 1. Нарисовать домик как на рисунке 
+// 2. Дать возможность пользователю вводить высоту домика (задача со звездочкой)
+// 3. Дать возможность ввести количество домиков. Домики рисуются справа на лево ( задача с двумя звездочками)
 /*
     /\
    /  \
@@ -33,8 +35,6 @@ int main()
 	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
 /*
       /\
