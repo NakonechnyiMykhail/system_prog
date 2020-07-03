@@ -139,7 +139,42 @@ double AvarangeSalary2(Worker2* worker) {
     return sum / static_cast<double>(count);
 }
 
-void PushStart2(Worker2** worker, std::string name, std::string position, int salary) {
+void PushStart2(Worker2** worker, const std::string& name, const std::string& position, int salary) {
+    // without double pointer BUT DOESN'T WORK
+    ///* 1. allocate node */
+    //Worker2* new_worker = new Worker2;
+    //Worker2* first = worker; /* used in step 5*/
+
+    ///* 2. put in the data  */
+    //new_worker->name = name;
+    //new_worker->position = position;
+    //new_worker->salary = salary;
+
+    ///* 3. This new node is going to be the first node, so
+    //      make next of it as NULL*/
+    //new_worker->prev = nullptr;
+    //new_worker->next = first;
+
+    ///* 4. If the Linked List is empty, then make the new
+    //      node as head */
+    //if (worker == nullptr) {
+    //    new_worker->prev = nullptr;
+    //    worker = new_worker;
+    //    return;
+    //}
+
+    ///* 5. Else traverse till the last node */
+    //while (first->next != nullptr) {
+    //    first = first->next;
+    //}
+
+    ///* 6. Change the next of last node */
+    //new_worker->next = first;
+
+    ///* 7. Make last node as previous of new node */
+    //first->prev = new_worker;
+    
+    // version with 2 pointers Worker2**
     // 1. allocate stucture
     Worker2* new_worker = new Worker2;// ({ name, position, salary, new Worker2, nullptr });
     // 2. put in the data
@@ -158,11 +193,11 @@ void PushStart2(Worker2** worker, std::string name, std::string position, int sa
 
 }
 
-void Append2(Worker2** worker, std::string name, std::string position, int salary)
+void Append2(Worker2* worker, const std::string& name, const std::string& position, int salary)
 {
     /* 1. allocate node */
     Worker2* new_worker = new Worker2;
-    Worker2* last = *worker; /* used in step 5*/
+    Worker2* last = worker; /* used in step 5*/
 
     /* 2. put in the data  */
     new_worker->name = name;
@@ -175,16 +210,17 @@ void Append2(Worker2** worker, std::string name, std::string position, int salar
 
     /* 4. If the Linked List is empty, then make the new
           node as head */
-    if (*worker == nullptr) {
+    if (worker == nullptr) {
         new_worker->prev = nullptr;
-        *worker = new_worker;
+        worker = new_worker;
         return;
     }
 
     /* 5. Else traverse till the last node */
-    while (last->next != nullptr)
+    while (last->next != nullptr) {
         last = last->next;
-
+    }
+        
     /* 6. Change the next of last node */
     last->next = new_worker;
 
@@ -246,7 +282,7 @@ double AvarangeSalary(Worker* worker) {
     return sum / static_cast<double>(count);
 }
 
-void PushStart(Worker** worker, std::string name, std::string position, int salary) {
+void PushStart(Worker** worker, const std::string& name, const std::string& position, int salary) {
     Worker* new_worker;
     new_worker = new Worker;// ({ name, position, salary });
 
@@ -257,7 +293,7 @@ void PushStart(Worker** worker, std::string name, std::string position, int sala
     (*worker) = new_worker;
 }
 
-void Append(Worker* worker, std::string name, std::string position, int salary) {
+void Append(Worker* worker, const std::string& name, const std::string& position, int salary) {
     Worker* current = worker;
     while (current->next != 0) {
         current = current->next;
@@ -350,7 +386,7 @@ int main()
                 name = GetString("name " + std::to_string(i + 1));
                 position = GetString(name + " position");
                 salary = Random(2000, 5000, 100); // per 500
-                Append2(&workers2, name, position, salary);
+                Append2(workers2, name, position, salary);
             }
             // ========== to first element ==============
             std::cout << "Enter worker to first element of list\n";
