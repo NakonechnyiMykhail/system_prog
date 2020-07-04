@@ -61,5 +61,7 @@ int main() {
 	}
 	std::cout << "avarageSalary = " << avarageSalary / personsCount;
 
+	delete firstNode, curNode;
+
 	return 0;
 }

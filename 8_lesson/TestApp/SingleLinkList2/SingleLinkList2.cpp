@@ -39,6 +39,8 @@ int main()
 	}
 	std::cout << "avarageSalary = " << avarageSalary / personsCount;
 
+	delete firstWorker, curWorker;
+
 	return 0;
 }
 
