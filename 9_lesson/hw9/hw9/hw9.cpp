@@ -13,17 +13,28 @@
 //12
 //34567
 //890
+// 
+// future work:
+// make with single/doubly link list
 
 #include <iostream>
 #include "Split.h"
 
-int main()
-{
+int main() {
     const char* str = "12-34567-890";
     char** tokens{ nullptr }; 
 
-    Split(str, '-', tokens);
+    //version 1
+    //Split(str, '-', tokens);
     
+    //version 2
+    //std::vector<std::string> v = SplitVector(str, '-');   //version 2 - 1
+    //std::vector<std::string> v = SplitVector2(str, "-");    //version 2 - 2
+    //for (const auto& i : v) { std::cout << i << std::endl; }
+
+    //version 3
+    Tokens* toks{ nullptr };
+    SplitToks(str, '-', toks);
 
     return 0;
 }
