@@ -8,6 +8,13 @@
 *.vcxproj.user
 *.vcxproj.filters
 *.txt
+*.cflags
+*.config
+*.creator
+*.cxxflags
+*.files
+*.includes
+*.sln
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++

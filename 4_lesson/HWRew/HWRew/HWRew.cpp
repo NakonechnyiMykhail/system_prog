@@ -4,8 +4,7 @@
 #include <iostream>
 #include <string>
 
-int main()
-{
+int main() {
     std::cout << "Enter the height: ";
     int height = 0;
     std::cin >> height;
