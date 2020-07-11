@@ -25,5 +25,12 @@ int main()
 	univ.ShowInformation();
 	univ.ShowStudents();
 
+	// =======================================================
+	Student* stud = new Student("Mike", 20, "dev");
+	University univ1("KhNURE", 1904);
+	univ1.AddStudent2(stud);
+	univ1.ShowInformation2();
+	univ1.ShowStudents2();
+
 	return 0;
 }

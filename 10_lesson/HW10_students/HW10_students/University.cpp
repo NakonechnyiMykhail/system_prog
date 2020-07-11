@@ -25,6 +25,11 @@ void University::AddStudent(Student* student)
 {
 	m_students.push_back(*student);
 }
+void University::AddStudent2(Student* student)
+{
+	m_arr[m_studentsCount] = student;
+	m_studentsCount++;
+}
 void University::SetName(const std::string& name) 
 {
 	this->m_name = name;
@@ -52,6 +57,17 @@ void University::ShowInformation()
 		std::endl;
 	std::cout << "========================================================================================" << std::endl;
 }
+void University::ShowInformation2()
+{
+	std::cout << "========================================================================================" << std::endl;
+	std::cout << "University Information: " << std::endl;
+	std::cout << std::setw(5) <<
+		"Name:\t\t" << m_name << '\t' <<
+		"Year:\t\t" << m_year << '\t' <<
+		"Students:\t\t" << m_studentsCount << '\t' <<
+		std::endl;
+	std::cout << "========================================================================================" << std::endl;
+}
 void University::ShowStudents()
 {
 	size_t count{ 0 };
@@ -69,5 +85,21 @@ void University::ShowStudents()
 	}
 
 	
+	std::cout << "========================================================================================" << std::endl;
+}
+void University::ShowStudents2()
+{
+	std::cout << "========================================================================================" << std::endl;
+	std::cout << "Students Information: " << std::endl;
+	for (size_t i = 0; i < m_studentsCount; i++)
+	{
+		std::cout << std::setw(5) <<
+			"\u2116: " << m_studentsCount << '\t' <<
+			"\tName:\t\t" << m_arr[i]->GetName() << '\t' <<
+			"\tAge:\t\t" << m_arr[i]->GetAge() << '\t' <<
+			"\tSpecialization:\t\t" << m_arr[i]->GetSpecialization() << '\t' <<
+			std::endl;
+	}
+
 	std::cout << "========================================================================================" << std::endl;
 }
