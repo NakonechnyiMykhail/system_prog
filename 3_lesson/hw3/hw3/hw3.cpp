@@ -25,11 +25,11 @@
 
 */
 /*
-	FUTURE WORK
+FUTURE WORK
 
-	  /\
-	 /  \ ___
-	/    \| |
+      /\
+     /  \ ___
+    /    \| |
    /      \ |
   /        \|
  /----------\
@@ -155,9 +155,9 @@ void SimpleHouseImplementation(int indexLine, int widthOfCursorStart, int height
 /*
 simple version
 
-	  /\
-	 /  \
-	/    \
+      /\
+     /  \
+    /    \
    /      \
   /        \
  |----------|
