@@ -35,14 +35,6 @@ const std::string currentDateTime() {
 
 DWORD WINAPI ThreadStart(LPVOID lpParam)
 {
-    auto start = std::chrono::system_clock::now();
-    // Some computation here
-    auto end = std::chrono::system_clock::now();
-
-    std::chrono::duration<double> elapsed_seconds = end - start;
-
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-    //*(DWORD*)lpParam *= 1000;
     int mili_sec = *(DWORD*)lpParam * 1000;
 
     while (mili_sec != 0)
@@ -51,11 +43,7 @@ DWORD WINAPI ThreadStart(LPVOID lpParam)
 
         if (mili_sec % 5000 == 0)
         {
-            end = std::chrono::system_clock::now();
-            elapsed_seconds = end - start;
-            end_time = std::chrono::system_clock::to_time_t(end);
             std::cout << "currentDateTime()=" << currentDateTime() << std::endl;
-            //std::cout << "currentDateTime()=" << std::ctime(&end_time) << std::endl;
         }
         mili_sec -= 1000;
         Sleep(1000);
