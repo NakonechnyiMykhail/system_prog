@@ -19,8 +19,9 @@
 #include <string>
 #include <stdio.h>
 
-// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+
 const std::string currentDateTime() {
+    // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
     time_t     now = time(0);
     struct tm  tstruct;
     char       buf[80];
@@ -35,18 +36,22 @@ const std::string currentDateTime() {
 
 DWORD WINAPI ThreadStart(LPVOID lpParam)
 {
-    int mili_sec = *(DWORD*)lpParam * 1000;
-
-    while (mili_sec != 0)
+    if (lpParam)
     {
-        std::cout << "Timer=" << mili_sec << std::endl;
-
-        if (mili_sec % 5000 == 0)
+        int mili_sec = *static_cast<DWORD *>(lpParam) * 1000;
+        while (mili_sec != 0)
         {
-            std::cout << "currentDateTime()=" << currentDateTime() << std::endl;
+            if (mili_sec % 5000 == 0)
+            {
+                std::cout << "currentDateTime()=" << currentDateTime() << std::endl;
+            }
+            mili_sec -= 1000;
+            Sleep(1000);
         }
-        mili_sec -= 1000;
-        Sleep(1000);
+    }
+    else
+    {
+        std::cerr << "lpParam is not set!" << std::endl;
     }
 
     return 0;
@@ -58,15 +63,16 @@ int main()
     char* pValue;
     size_t len;
     errno_t err = _dupenv_s(&pValue, &len, "LIFETIMER");
-    //std::cout << pValue << std::endl;
 
-    DWORD dwThrdParam = atoi(pValue);
-    std::cout << "dwThrdParam = " << dwThrdParam << std::endl;
+    if (err == 0 && pValue != nullptr)
+    {
+        DWORD dwThrdParam = atoi(pValue);
+        std::cout << "dwThrdParam = " << dwThrdParam << std::endl;
 
-    HANDLE thread1 = CreateThread(0, 0, ThreadStart, &dwThrdParam, 0, 0);
-    Sleep(dwThrdParam*1000);
-   
-
+        HANDLE thread1 = CreateThread(0, 0, ThreadStart, &dwThrdParam, 0, 0);
+        Sleep(dwThrdParam * 1000);
+        free(pValue);
+    }
     return 0;
 }
 
